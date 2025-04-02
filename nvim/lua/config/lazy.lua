@@ -114,19 +114,13 @@ require("lazy").setup({
     },
 
     -- File explorer (NvimTree)
-    -- {
-    --     "nvim-tree/nvim-tree.lua",
-    --     dependencies = { "nvim-tree/nvim-web-devicons" },
-    --     config = function()
-    --         require("nvim-tree").setup({})
-    --         vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
-    --     end,
-    -- },
-
-    -- Telescoping File Browser
     {
-        "nvim-telescope/telescope-file-browser.nvim",
-        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+        "nvim-tree/nvim-tree.lua",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+            require("nvim-tree").setup({})
+            vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
+        end,
     },
 
     -- Status line (Lualine)
@@ -196,21 +190,9 @@ vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostics in float" })
--- vim.keymap.set("n", "<leader>t", function()
---     require("nvim-tree.api").tree.toggle()
--- end, { desc = "Toggle file tree" })
-vim.keymap.set(
-    "n",
-    "<space>fb",
-    function()
-        require("telescope").extensions.file_browser.file_browser({
-        path = "%:p:h",
-        select_buffer = true,
-        initial_mode = "normal",
-    })
-    end,
-    { noremap = true, silent = true }
-)
+vim.keymap.set("n", "<leader>t", function()
+    require("nvim-tree.api").tree.toggle()
+end, { desc = "Toggle file tree" })
 
 -- Autorun Commands
 local function open_nvim_tree(data)
@@ -230,12 +212,12 @@ vim.api.nvim_create_autocmd("VimEnter", {
 vim.g.clipboard = {
     name = "wsl-clip",
     copy = {
-        ["+"] = "clip.exe",
-        ["*"] = "clip.exe",
+        ["+"] = "win32yank.exe -i --crlf",
+        ["*"] = "win32yank.exe -i --crlf",
     },
     paste = {
-        ["+"] = "powershell.exe -noprofile -command Get-Clipboard",
-        ["*"] = "powershell.exe -noprofile -command Get-Clipboard",
+        ["+"] = "win32yank.exe -o --lf",
+        ["*"] = "win32yank.exe -o --lf",
 
     },
     cache_enabled = false,
